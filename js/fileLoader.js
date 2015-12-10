@@ -10,7 +10,7 @@ function loadFile (filename, initializer) {
 			new DataReader (filename, { encoding: "utf8" })
         .on ("error", function (error){
             console.log (error);
-            reject(err);
+            reject(error);
         })
         .on ("line", function (line, nextByteOffset){
             try{
