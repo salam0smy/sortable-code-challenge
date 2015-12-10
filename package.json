@@ -1,12 +1,15 @@
 {
-  "name": "Sortable Challenge",
+  "name": "sortable_challenge",
   "version": "1.0.0",
-  "description": "This is a chalenge to a job application for Sortable",
-  "dependencies": {},
-  "devDependencies": {
-    "karma": "^0.12.31",
-    "karma-jasmine": "^0.2.2",
-    "karma-phantomjs-launcher": "^0.1.4"
+  "description": "This is a challenge for a job application at Sortable",
+  "dependencies": {
+    "buffered-reader": "^1.0.1",
+    "promise": "^7.0.4"
   },
-  "author": "Salam AlYahya"
+  "author": "Salam AlYahya",
+  "scripts": {
+    "start-short": "node app.js challenge_data/productsShort.txt challenge_data/listingsShort.txt",
+    "start": "node app.js challenge_data/products.txt challenge_data/listings.txt",
+    "start-debug": "node-debug app.js challenge_data/products.txt challenge_data/listings.txt"
+  }
 }
