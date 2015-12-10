@@ -3,9 +3,9 @@ var reader = require ("buffered-reader"),
 	Promise = require('promise'),
 	fs = require('fs');
 
-function FileLoader (filename) {
+function loadFile (filename, initializer) {
 	var lines = [];
-    console.time("Loading File: "+ filename);
+    console.time("Load File: "+ filename);
 	var promise = new Promise(function (resolve, reject) {
 			new DataReader (filename, { encoding: "utf8" })
         .on ("error", function (error){
@@ -14,7 +14,12 @@ function FileLoader (filename) {
         })
         .on ("line", function (line, nextByteOffset){
             try{
-                lines.push(JSON.parse(line));
+                if(initializer){
+                    lines.push(new initializer(JSON.parse(line)));
+                }
+                else{
+                    lines.push(JSON.parse(line));
+                }
             }
             catch(error){
                 reject(error);
@@ -22,7 +27,7 @@ function FileLoader (filename) {
         })
         .on("end", function(){
         	resolve(lines);
-            console.timeEnd("Loading File: "+ filename);
+            console.timeEnd("Load File: "+ filename);
         })
         .read();
 	});
@@ -30,11 +35,12 @@ function FileLoader (filename) {
 }
 
 function writeToFile (fileName, results) {
-	fs.appendFile(fileName, JSON.stringify(results)+",", 
+    // write one line of JSON data to the file
+	fs.appendFile(fileName, JSON.stringify(results)+"\n", 
         function (err) {
             if (err) return console.log(err);
         });
 }
 
-exports.loadFile = FileLoader;
-exports.saveFile = writeToFile;
+exports.loadFile = loadFile;
+exports.saveToFile = writeToFile;
